@@ -1,0 +1,13 @@
+db	filename	description
+Zc	"Brandmaster.mdb"	"Zc brand and resight database"
+Cu	"cutagnew.mdb"	"Cu tag and resight database"
+Ej	"Ej-Brand-Resight-Database.accdb"	"Ej brand/tag and resight database"
+Pv	"PvObservations.accdb"	"Pv tag/brand and resight database"
+ZcPS	"WaCapture.Resights.mdb"	"Zc Puget Sound brand/tag and resight database"
+CIPCensus	"CIPinnipedCensusMaster.mdb"	"Channel Islands Pinniped Census database"
+CIPquery	"CIPinnipedCensusQuery.mdb"	"Channel Islands Pinniped Census query database"
+Hookworm	"HookwormTrtmntExpt.mdb"	"Hookworm Treatment experiment at SMI"
+ZcWean	"Weaning&SurvivalStudy.accdb"	"Weaning and brand evaluation database"
+SMIScat	"SMIScat.mdb"	"SMI Scat database"
+WaOrPp	"WaOrCetaceanAerialSurvey.mdb"	"WA/OR aerial survey data"
+VesselPp	"InlandSmallBoatSuvey02&03.mdb"	"WA inland waters vessel survey"

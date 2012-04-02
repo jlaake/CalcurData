@@ -1,0 +1,15 @@
+Package: CalcurData
+Maintainer: Jeff Laake <jeff.laake@noaa.gov>
+License: GPL version 2 or later
+Title: Calcur data access package
+LazyLoad: yes
+Author: Jeff Laake
+Description: 
+Version: 1.0
+URL: 
+Date: 2012-03-23
+Depends:
+    RODBC
+Collate:
+    'getData.r'
+    'CalcurData-package.r'
