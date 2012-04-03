@@ -11,5 +11,6 @@ Date: 2012-03-23
 Depends:
     RODBC
 Collate:
-    'getData.r'
     'CalcurData-package.r'
+    'getCalcurData.r'
+    'saveCalcurData.r'
