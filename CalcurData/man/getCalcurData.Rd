@@ -1,8 +1,8 @@
-\name{getData}
-\alias{getData}
+\name{getCalcurData}
+\alias{getCalcurData}
 \title{Retrieve tables from Calcur Databases}
 \usage{
-  getData(db = NULL, tbl = NULL, dir = "J:/Master")
+  getCalcurData(db = NULL, tbl = NULL, dir = NULL)
 }
 \arguments{
   \item{db}{name code for database; see databases.txt for a
@@ -11,7 +11,7 @@
   \item{tbl}{vector of table names in database}
 
   \item{dir}{directory location for databases; if NULL uses
-  files with package}
+  value in databases.txt; if "" uses package directory}
 }
 \value{
   if db is null, prints list of databases; if db specified
@@ -35,14 +35,15 @@
   is accomplished with the R package RODBC.
 }
 \details{
-  There are 4 ways to run this function: 1) getData() will
-  list the codes for the databases and a description 2)
-  getData(db="Zc") specifying a database code (db) will
-  list the tables in the database 3) getData(db="Zc",
-  tbl="Alive") will return the contents of the table as a
-  dataframe. 4) getData(db="Zc", tbl=c("Alive","Zcbrand"))
-  will return a list of dataframes with a dataframe for
-  each table.
+  There are 4 ways to run this function: 1) getCalcurData()
+  will list the codes for the databases and a description
+  2) getCalcurData(db="Zc") specifying a database code (db)
+  will list the tables in the database 3)
+  getCalcurData(db="Zc", tbl="Alive") will return the
+  contents of the table as a dataframe. 4)
+  getCalcurData(db="Zc", tbl=c("Alive","Zcbrand")) will
+  return a list of dataframes with a dataframe for each
+  table.
 
   Note that the name of the tbl is not case-specific and
   need not match the case in the Access database.  If
@@ -59,13 +60,12 @@
   as the database file is at that location.
 }
 \examples{
-# examples that assume databases are in package directory for testing
-# drop dir=NULL to use Calcur databases in their standard location.
-getData(dir=NULL)
-getData(db="Zc",dir=NULL)
-resights=getData(db="Zc", tbl="Alive",dir=NULL)
+# examples that assume databases are in their standard location.
+getCalcurData()
+getCalcurData(db="Zc")
+resights=getCalcurData(db="Zc", tbl="Alive")
 str(resights)
-datalist=getData(db="Zc", tbl=c("Alive","Zcbrand"),dir=NULL)
+datalist=getCalcurData(db="Zc", tbl=c("Alive","Zcbrand"))
 names(datalist)
 }
 \author{
