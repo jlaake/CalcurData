@@ -53,11 +53,11 @@
 
   The default directory specification is dir="J:/Master"
   which is the directory calcur/databases/master.  If you
-  specify dir=NULL then it will expect to find the
-  databases in the directory for the package location in
-  the library.  I use that for testing and to have a local
-  copy not on the network. Any location can be used as long
-  as the database file is at that location.
+  specify dir="" then it will expect to find the databases
+  in the directory for the package location in the library.
+  I use that for testing and to have a local copy not on
+  the network. Any location can be used as long as the
+  database file is at that location.
 }
 \examples{
 # examples that assume databases are in their standard location.
