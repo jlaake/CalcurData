@@ -40,8 +40,10 @@ saveCalcurData=function(x,db,tbl,dir=NULL)
 	else
 	{
 		# Connect to database if file exists
-		if(is.null(dir))dir=databases$dir[databases$db==db]
-		if(dir=="")dir=sdir
+		if(is.null(dir))
+			dir=databases$dir[databases$db==db]
+		else
+		    if(dir=="")dir=sdir
 		fdir=file.path(dir,databases$filename[databases$db==db])
 		if(file.exists(fdir))
 		{
