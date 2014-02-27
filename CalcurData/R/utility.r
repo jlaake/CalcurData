@@ -13,8 +13,8 @@ filter_wtmp=function(x) return(x[x$WTMP!=999,])
 
 construct_daily=function(data,buoy="PSLC1")
 {
-	data$Date=as.Date(paste(data$Year,data$Month,data$Day,sep="/"))
+	data$Date=paste(data$Month,data$Day,data$Year,sep="/")
 	x=tapply(data$WTMP,data$Date,mean)
-	data=data.frame(Date=as.Date(names(x)),SST=x,Buoy=buoy)
+	data=data.frame(Date=names(x),SST=as.vector(x),Buoy=buoy,stringsAsFactors=FALSE)
 	return(data)
 }
