@@ -10,10 +10,3 @@ URL:
 Date: 2012-03-23
 Depends:
     RODBC
-Collate:
-    'CalcurData-package.r'
-    'getCalcurData.r'
-    'saveCalcurData.r'
-    'buoy.r'
-    'update_buoy.r'
-    'utility.r'

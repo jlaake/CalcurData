@@ -14,10 +14,15 @@
 #' @author Jeff Laake
 #' @examples
 #' esb_2013=read_ndbc("46053",2013)
-#' update_buoy_data(esb_2013,"EastSantaBarbaraChannelBuoyData",buoy="46053",dir="")
-#' update_all(month="Jan",dir="")
-update_buoy_data=function(newdata,tablename,dir)
+#' update_buoy_data(esb_2013,"EastSantaBarbaraChannelBuoyData",buoy="46053")
+#' update_all(month="Jan",2014)
+update_buoy_data=function(newdata,tablename,dir=NULL)
 {
+	if(is.null(newdata))
+	{
+		message("no data provided")
+		return(NULL)
+	}
 	olddata=getCalcurData("Environ",tablename,dir=dir)
 	if(is.null(olddata$Date))
 		oldDate=as.Date(paste(olddata$YYYY,olddata$MM,olddata$DD,sep="/"))
@@ -48,7 +53,7 @@ update_buoy_data=function(newdata,tablename,dir)
 	}
 	else
 	{
-		newdata=newdata[order(as.Date(paste(newdata$YYYY,newdata$MM,newdata$DD,sep="/"))),]
+		newdata=newdata[order(paste(newdata$YYYY,formatC(newdata$MM,width=2,flag=0),formatC(newdata$DD,width=2,flag=0),formatC(newdata$HH,width=2,flag=0),sep="")),]
 	}
 	if("ID"%in%names(olddata))
 		newdata=cbind(ID=1:nrow(newdata),newdata)
@@ -56,42 +61,53 @@ update_buoy_data=function(newdata,tablename,dir)
 	saveCalcurData(newdata, "Environ",tablename,dir=dir)
 	invisible()
 }
-update_all=function(month=NULL,year=NULL,dir)
+update_all=function(month=NULL,year=NULL,dir=NULL)
 {
 	if(!is.null(month))
 	{
-		if(!is.null(year))stop("\nCan only set month or year. Not both.")
+		if(is.null(year))stop("\nMust set year with month or just year.")
 	} else
 	{
-		if(is.null(year))stop("\n Must set year or month.")
+		if(is.null(year))stop("\n Must set year.")
 	}
+	cat("\nUpdating EastSantaBarbaraChannelBuoy\n")
 	if(!is.null(month))
-		data=read_ndbc_month("46053",month)
+		data=read_ndbc_month("46053",month,year)
 	else
 		data=read_ndbc("46053",year)
-	update_buoy_data(data,"EastSantaBarbaraChannelBuoyData",dir=dir)
-	if(!is.null(month))
-		data=read_ndbc_month("46054",month)
+	if(!is.null(data))
+	   update_buoy_data(data,"EastSantaBarbaraChannelBuoyData",dir=dir)
+   cat("\nUpdating WestSantaBarbaraChannelBuoy\n")
+   if(!is.null(month))
+		data=read_ndbc_month("46054",month,year)
 	else
 		data=read_ndbc("46054",year)
-	update_buoy_data(data,"WestSantaBarbaraChannelBuoyData",dir=dir)
+	if(!is.null(data))
+		update_buoy_data(data,"WestSantaBarbaraChannelBuoyData",dir=dir)
+	cat("\nUpdating PtArguelloBuoy\n")
 	if(!is.null(month))
-		data=read_ndbc_month("46218",month)
+		data=read_ndbc_month("46218",month,year)
 	else
 		data=read_ndbc("46218",year)
-	update_buoy_data(data,"PtArguelloBuoyData",dir=dir)
+	if(!is.null(data))
+		update_buoy_data(data,"PtArguelloBuoyData",dir=dir)
+	cat("\nUpdating PtSantaMariaBuoy\n")
 	if(!is.null(month))
-		data=read_ndbc_month("46011",month)
+		data=read_ndbc_month("46011",month,year)
 	else
 		data=read_ndbc("46011",year)
-	update_buoy_data(data,"PtSantaMariaBuoyData",dir=dir)  
+	if(!is.null(data))
+		update_buoy_data(data,"PtSantaMariaBuoyData",dir=dir)  
+	cat("\nUpdating CapeSanMartinBuoy\n")	
 	if(!is.null(month))
-		data=read_ndbc_month("46028",month)
+		data=read_ndbc_month("46028",month,year)
 	else
 		data=read_ndbc("46028",year)
-	update_buoy_data(data,"CapeSanMartinBuoyData",dir=dir)
+	if(!is.null(data))
+		update_buoy_data(data,"CapeSanMartinBuoyData",dir=dir)
+	cat("\nUpdating PtSanLuis\n")
 	if(!is.null(month))
-		data=read_ndbc_month("pslc1",month)
+		data=read_ndbc_month("pslc1",month,year)
 	else
 		data=read_ndbc("pslc1",year)
 	data=construct_daily(filter_wtmp(data))
