@@ -5,7 +5,7 @@ Title: Calcur data access package
 LazyLoad: yes
 Author: Jeff Laake
 Description: 
-Version: 1.0
+Version: 1.1
 URL: 
 Date: 2012-03-23
 Depends:

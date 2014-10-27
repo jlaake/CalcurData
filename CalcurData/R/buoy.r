@@ -14,7 +14,7 @@
 read_ndbc=function(buoy,year)
 {
 	conn=url(paste("http://www.ndbc.noaa.gov/view_text_file.php?filename=",buoy,"h",year,".txt.gz&dir=data/historical/stdmet/",sep=""))
-	try(df=read.delim(conn,row.names=NULL,skip=2,sep="",header=FALSE))
+	suppressWarnings(try(df=read.delim(conn,row.names=NULL,skip=2,sep="",header=FALSE)))
 	if(class(df)=="try-error")
 	{
 		message(paste("Year = ", year, " not available for buoy ",buoy,sep=""))
