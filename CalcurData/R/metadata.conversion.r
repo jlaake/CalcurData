@@ -58,7 +58,7 @@ resights=function(inp,out,append=FALSE)
 #' @param out name of output file which is formatted for data copying to data entry template
 #' @param append if TRUE, append to the output file
 #' @return no return value
-#' @export resights 
+#' @export bites 
 #' @author Jeff Laake, Jeff Harris
 bites=function(inp,out,append=FALSE)
 {
