@@ -5,8 +5,8 @@ Title: Calcur data access package
 LazyLoad: yes
 Author: Jeff Laake
 Description: 
-Version: 1.1
+Version: 1.2
 URL: 
-Date: 2012-03-23
+Date: 2015-02-10
 Depends:
-    RODBC
+    RODBC, stringr
