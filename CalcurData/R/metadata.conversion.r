@@ -162,7 +162,7 @@ ejresights=function(inp=NULL,out,append=FALSE)
 	date=sapply(strsplit(datetime," "),function(x)x[1])
 	datemat=do.call("rbind",strsplit(date,"/"))
 	region=gsub(" ","",substr(xx[-(1:5)],ivec[5],ivec[6]-1))
-	sitename=gsub(" ","",substr(xx[-(1:5)],ivec[6],ivec[7]-1))
+	sitename=str_trim(substr(xx[-(1:5)],ivec[6],ivec[7]-1))
 	condition=gsub(" ","",substr(xx[-(1:5)],ivec[7],ivec[8]-1))
 	condition[condition=="QUALITY"&nchar(brand)<=4]=sapply(nchar(brand),function(x) paste(rep("0",x),collapse=""))[condition=="QUALITY"&nchar(brand)<=4]
 	condition=gsub(" ","",condition)
@@ -181,7 +181,7 @@ ejresights=function(inp=NULL,out,append=FALSE)
 	age=gsub(" ","",substr(xx[-(1:5)],ivec[16],ivec[17]-1))
 	sex=gsub(" ","",substr(xx[-(1:5)],ivec[17],ivec[18]-1))
 	rbi=gsub(" ","",substr(xx[-(1:5)],ivec[18],ivec[19]-1))
-	sel=brand!="BRAND/TAGID"
+	sel=brand!="Brand/TagID"
 	bl=substr(brand,nchar(brand),nchar(brand))
 	bl2=substr(brand,1,1)
 	bl.last=suppressWarnings(is.na(as.numeric(bl)))
@@ -191,13 +191,34 @@ ejresights=function(inp=NULL,out,append=FALSE)
 	BrandNumber=substr(brand,1,nchar(brand)-1)
 	BrandNumber[bl.first]=substr(brand[bl.first],2,nchar(brand[bl.first]))
 	BrandNumber=suppressWarnings(as.numeric(BrandNumber))
-	
-	df=cbind(BrandLetter=BrandLetter,BrandNumber=BrandNumber,Brand=brand,BrandLocation="L",BrandQuality=condition,Check=check,TagNumber=tagnumber,LTag=leftstatus,RTag=rightstatus,
+	check[check=="Y"]="YES"
+    sex[sex=="SEX"]=NA
+	age[age=="AGE"]=NA
+	rbi[rbi=="RIB"]=NA
+	comments[substr(comments,1,8)=="COMMENTS"]=""
+    secondaryobs[secondaryobs=="SECONDARYOBS"]=""
+    sitename[sitename=="CARMANAH"]="CARMANAH POINT"
+	sitename[sitename=="BODELTEH"]="BODELTEH ISLAND"
+	sitename[sitename=="E. BODELTEH"]="E. BODELTEH ISLAND"
+	sitename[sitename=="W. BODELTEH"]="W. BODELTEH ISLAND"
+	df=data.frame(BrandLetter=BrandLetter,BrandNumber=BrandNumber,Brand=brand,BrandLocation="L",BrandQuality=condition,Check=check,TagNumber=tagnumber,LTag=leftstatus,RTag=rightstatus,
 			TagColor="W",Month=as.numeric(datemat[,2]),Day=as.numeric(datemat[,3]),Year=as.numeric(datemat[,1]),Time="",Sex=sex,Age=age,
-			Region=region,SiteName=sitename,SubSite="",RBI=rbi,Obs=primaryobs,Obs2=secondaryobs,Platform=platform,photo=photo,Comments=comments,image=image,DateEntered=format(Sys.time()),Radio="",Patch="")
-	
+			Region=region,SiteName=sitename,SubSite="",RBI=rbi,Obs=primaryobs,Obs2=secondaryobs,Platform=platform,photo=photo,Comments=comments,image=image,DateEntered=format(Sys.time()),Radio="",Patch="",stringsAsFactors=FALSE)	
+	sel=brand!="Brand/TagID"
 	df=df[sel,]
-	
+	# get rid of duplicates and combine image numbers
+	images=tapply(df$image,df$Brand,function(x) paste(x,collapse=","))
+	dfmerge=data.frame(Brand=names(images),image=as.vector(images))
+	df=merge(subset(df,select=names(df)[names(df)!="image"]),dfmerge,by="Brand")
+	dupsall=duplicated(df[,!names(df)=="image"])
+	df=df[!dupsall,]
+	dups=duplicated(subset(df,select=c("Brand","Month","Day","Year")))
+	if(any(dups))
+	{
+		cat("\nFollowing records are duplicates for Brand-Date but information varies. Please collapse.")
+		print(df[dups,])
+		stop("\nStopping without saving.\n")
+	}
 	if(append)
 		write.table(df,con_out,row.names=FALSE,col.names=FALSE,sep="\t")
 	else
@@ -230,7 +251,7 @@ ejcheck=function(filename=NULL)
 	tblRBI=getCalcurData("Ej",tbl="tblRBI")
 	rbi_values=as.character(tblRBI$RBI)
 	tblObs=getCalcurData("Ej",tbl="tblObs")
-	obs_values=as.character(tblObs$Obs)
+	obs_values=c("",as.character(tblObs$Obs))
 	tblTag=getCalcurData("Ej",tbl="tblLRTag")	
 	tag_values=as.character(tblTag$LRTag)
 	tblcheck=getCalcurData("Ej",tbl="tblBrandCheck")	
