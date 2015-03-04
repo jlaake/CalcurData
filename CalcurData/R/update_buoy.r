@@ -70,13 +70,16 @@ update_all=function(month=NULL,year=NULL,dir=NULL)
 	{
 		if(is.null(year))stop("\n Must set year.")
 	}
-	cat("\nUpdating EastSantaBarbaraChannelBuoy\n")
-	if(!is.null(month))
-		data=read_ndbc_month("46053",month,year)
-	else
-		data=read_ndbc("46053",year)
-	if(!is.null(data))
-	   update_buoy_data(data,"EastSantaBarbaraChannelBuoyData",dir=dir)
+	if(year<2015)
+	{
+		cat("\nUpdating EastSantaBarbaraChannelBuoy\n")
+		if(!is.null(month))
+			data=read_ndbc_month("46053",month,year)
+		else
+			data=read_ndbc("46053",year)
+		if(!is.null(data))
+			update_buoy_data(data,"EastSantaBarbaraChannelBuoyData",dir=dir)
+	}
    cat("\nUpdating WestSantaBarbaraChannelBuoy\n")
    if(!is.null(month))
 		data=read_ndbc_month("46054",month,year)
