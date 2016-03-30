@@ -28,7 +28,11 @@ read_ndbc=function(buoy,year)
 read_ndbc_month=function(buoy,month,year)
 {
 	months=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
-	conn=url(paste("http://www.ndbc.noaa.gov/view_text_file.php?filename=",buoy,match(month,months),year,".txt.gz&dir=data/stdmet/",month,"/",sep=""))
+	monthn=c("1","2","3","4","5","6","7","8","9","a","b","c")
+	if(year<2015)
+	   conn=url(paste("http://www.ndbc.noaa.gov/view_text_file.php?filename=",buoy,match(month,months),year,".txt.gz&dir=data/stdmet/",month,"/",sep=""))
+    else
+		conn=url(paste("http://www.ndbc.noaa.gov/view_text_file.php?filename=",buoy,monthn[match(month,months)],year,".txt.gz&dir=data/stdmet/",month,"/",sep=""))
 	df=try(read.delim(conn, row.names = NULL, skip = 2, sep = "", header = FALSE),silent=TRUE)
 	if(class(df)=="try-error")
 	{

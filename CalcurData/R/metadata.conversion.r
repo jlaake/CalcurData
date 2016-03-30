@@ -40,15 +40,69 @@ resights=function(inp,out,append=FALSE)
 	sel=brand!="BRAND"
 	df=cbind(image=image,brand=brand,location=location,condition=condition,repstatus=repstatus,behavior=behavior,photo=photo,leftstatus=leftstatus,rightstatus=rightstatus,datetime=datetime,comments=comments,woundcode=woundcode)
 	df=df[sel,]
-	df=cbind(df,date=sapply(strsplit(df[,"datetime"]," "),function(x)x[1]))
+	df=cbind(df,date=sapply(strsplit(df[,"datetime"]," "),function(x)x[1]),time=sapply(strsplit(df[,"datetime"]," "),function(x)x[2]))
 	
 	df=cbind(sitedate=df[,"date"],code=df[,"location"],ResightID=df[,"brand"],ltag=df[,"leftstatus"],
 			rtag=df[,"rightstatus"],repstatus=df[,"repstatus"],behavior=df[,"behavior"],photo=df[,"photo"],
-			brandcond=df[,"condition"],observer=rep("JDH",nrow(df)),woundcode=df[,"woundcode"],imagenum=df[,"image"],comments=df[,"comments"])
-	if(append)
-		write.table(df,con_out,row.names=FALSE,col.names=FALSE,sep="\t")
-	else
-		write.table(df,con_out,row.names=FALSE,sep="\t")
+			brandcond=df[,"condition"],observer=rep("JDH",nrow(df)),comments=df[,"comments"],woundcode=df[,"woundcode"],imagenum=df[,"image"],time=df[,"time"])
+	cnt=sapply(df[,"ResightID"],function(x) length(grep(";",x)))
+	if(all(cnt==0))
+	{
+		if(append)
+			write.table(df,con_out,row.names=FALSE,col.names=FALSE,sep="\t")
+		else
+			write.table(df,con_out,row.names=FALSE,sep="\t")
+	} else
+	{
+		xdf=NULL
+		for(i in 1:nrow(df))
+		{
+			ids=strsplit(df[i,"ResightID"],";")[[1]]
+			tempdf=df[rep(i,length(ids)),,drop=FALSE]
+			tempdf[,"ResightID"]=ids
+			code=strsplit(df[i,"code"],";")[[1]]
+			if(length(code)!=length(ids) &length(code)!=1)stop("error in code value in line ",i)
+			code[toupper(code)=="X"]=""
+			tempdf[,"code"]=code
+			ltag=strsplit(df[i,"ltag"],";")[[1]]
+			if(length(ltag)==0)ltag="X"
+			if(length(ltag)!=length(ids) &length(ltag)!=1)stop("error in ltag value in line ",i)
+			ltag[toupper(ltag)=="X"]=""
+			tempdf[,"ltag"]=ltag
+			rtag=strsplit(df[i,"rtag"],";")[[1]]
+			if(length(rtag)==0)rtag="X"
+			if(length(rtag)!=length(ids) &length(rtag)!=1)stop("error in rtag value in line ",i)
+			rtag[toupper(rtag)=="X"]=""
+			tempdf[,"rtag"]=rtag
+			repstatus=strsplit(df[i,"repstatus"],";")[[1]]
+			if(length(repstatus)==0)repstatus="X"
+			if(length(repstatus)!=length(ids) &length(repstatus)!=1)stop("error in repstatus value in line ",i)
+			repstatus[toupper(repstatus)=="X"]=""
+			tempdf[,"repstatus"]=repstatus
+			behavior=strsplit(df[i,"behavior"],";")[[1]]
+			if(length(behavior)==0)behavior="X"
+			if(length(behavior)!=length(ids) &length(behavior)!=1)stop("error in behavior value in line ",i)
+			behavior[toupper(behavior)=="X"]=""
+			tempdf[,"behavior"]=behavior
+			brandcond=strsplit(df[i,"brandcond"],";")[[1]]
+			if(length(brandcond)==0)brandcond="X"
+			if(length(brandcond)>1)
+			   brandcond[2:length(brandcond)]=paste("'",brandcond[2:length(brandcond)],sep="")
+			if(length(brandcond)!=length(ids) &length(brandcond)!=1)stop("error in brandcond value in line ",i)
+			brandcond[toupper(brandcond)=="X"]=""
+			tempdf[,"brandcond"]=brandcond
+			comment=strsplit(df[i,"comments"],";")[[1]]
+			if(length(comment)==0)comment="X"
+			if(length(comment)!=length(ids) &length(comment)!=1)stop("error in comment value in line ",i)
+			comment[str_trim(toupper(comment))%in%c("X","")]=""
+			tempdf[,"comments"]=str_trim(comment)
+			xdf=rbind(xdf,tempdf)
+		}
+		if(append)
+			write.table(xdf,con_out,row.names=FALSE,col.names=FALSE,sep="\t")
+		else
+			write.table(xdf,con_out,row.names=FALSE,sep="\t")
+	}
 	close(con_out)
 	invisible()
 }
