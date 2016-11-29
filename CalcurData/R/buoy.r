@@ -1,12 +1,13 @@
 #' Retrieve buoy data 
 #' 
-#' @param bouy NDBC buoy designation (ie ESB 46053)
+#' @param buoy NDBC buoy designation (ie ESB 46053)
 #' @param year 4 digit year to extract
 #' @param month text string for month from current year data
-#' @param dir directory location for databases; if NULL uses value in databases.txt; if "" uses package directory
 #' @return extracted dataframe 
 #' @export read_ndbc read_ndbc_month 
 #' @aliases read_ndbc read_ndbc_month 
+#' @usage read_ndbc(buoy,year)
+#'        read_ndbc_month(buoy,month,year)
 #' @author Jeff Laake
 #' @examples
 #' esb_2013=read_ndbc("46053",2013)

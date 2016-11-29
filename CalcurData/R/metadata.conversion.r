@@ -201,7 +201,6 @@ bites=function(inp,out,append=FALSE)
 ejresights=function(inp=NULL,out,append=FALSE)
 {
 	if(is.null(inp))inp=file.choose()
-	library(stringr)
 	if(append)  
 		con_out=file(out,open="at")
 	else

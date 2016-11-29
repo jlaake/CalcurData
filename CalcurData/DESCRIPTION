@@ -1,12 +1,16 @@
 Package: CalcurData
-Maintainer: Jeff Laake <jeff.laake@noaa.gov>
-License: GPL version 2 or later
 Title: Calcur data access package
+Description: Various functions are contained in the package to retrieve data
+    from Access tables and save tables to the databases. Also contains functions
+    for converting AcDSee metadata files for data entry and updating buoy data into
+    environmental database.
 LazyLoad: yes
 Author: Jeff Laake
-Description: 
+Maintainer: Jeff Laake <jeff.laake@noaa.gov>
+License: GPL (>= 2)
 Version: 1.4
-URL: 
 Date: 2016-01-07
-Depends:
-    RODBC, stringr
+Imports:
+    RODBC,
+    stringr
+RoxygenNote: 5.0.1

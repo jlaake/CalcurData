@@ -11,11 +11,14 @@
 #' @return no return value
 #' @export update_buoy_data update_all 
 #' @aliases update_buoy_data update_all 
+#' @usage update_all(month=NULL,year=NULL,dir=NULL)
+#'        update_buoy_data(newdata,tablename,dir=NULL)
 #' @author Jeff Laake
 #' @examples
 #' esb_2013=read_ndbc("46053",2013)
-#' update_buoy_data(esb_2013,"EastSantaBarbaraChannelBuoyData",buoy="46053")
-#' update_all(month="Jan",2014)
+#' # commented out so has not to modify data
+#' #update_buoy_data(esb_2013,"EastSantaBarbaraChannelBuoyData")
+#' #update_all(month="Jan",2014)
 update_buoy_data=function(newdata,tablename,dir=NULL)
 {
 	if(is.null(newdata))
