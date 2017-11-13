@@ -61,7 +61,10 @@ getCalcurData=function(db=NULL,tbl=NULL,dir=NULL)
 			fdir=file.path(dir,databases$filename[databases$db==db])
 			if(file.exists(fdir))
 			{
-				connection=odbcConnectAccess2007(fdir)
+				if(strsplit(fdir,"\\.")[[1]][2]!="mdb")
+            connection<-odbcConnectAccess2007(fdir)
+        else
+				    connection=odbcConnectAccess(fdir)
 				if(connection==-1)
 				{
 					cat("\nError in connecting to database\n")
