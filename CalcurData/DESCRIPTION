@@ -8,8 +8,8 @@ LazyLoad: yes
 Author: Jeff Laake
 Maintainer: Jeff Laake <jeff.laake@noaa.gov>
 License: GPL (>= 2)
-Version: 1.4
-Date: 2016-01-07
+Version: 1.5
+Date: 2018-05-21
 Imports:
     RODBC,
     stringr
