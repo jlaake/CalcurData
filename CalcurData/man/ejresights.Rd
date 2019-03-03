@@ -22,4 +22,3 @@ Convert resight file from ACDSee format for Ej sightings to data entry template 
 \author{
 Jeff Laake, Jeff Harris
 }
-

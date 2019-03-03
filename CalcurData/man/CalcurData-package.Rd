@@ -2,8 +2,8 @@
 % Please edit documentation in R/CalcurData-package.r
 \docType{package}
 \name{CalcurData-package}
-\alias{CalcurData}
 \alias{CalcurData-package}
+\alias{CalcurData}
 \title{California Current Program Data Access}
 \description{
 Functions for accessing and storing in Access databases, converting metadata and updating buoy data.
@@ -33,4 +33,3 @@ files into a format more suitable for data entry. See ?resights
 Jeff Laake Maintainer: <Jeff.Laake@noaa.gov>
 }
 \keyword{package}
-

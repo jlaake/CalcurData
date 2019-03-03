@@ -46,46 +46,26 @@
 #' 
 getCalcurData=function(db=NULL,tbl=NULL,dir=NULL)
 {
-#   Get file of database names (db), definitions and filenames
-    sdir=system.file(package="CalcurData")
+# Get file of database names (db), definitions and filenames
+  sdir=system.file(package="CalcurData")
 	databases=read.delim(file.path(sdir,"databases.txt"))
-#   If null db, output list of databases
+# If null db, output list of databases
 	if(is.null(db)|| !db %in% databases$db)
 	  cat("Database names:\n",
 			 paste(paste(format(databases$db[order(databases$db)],width=15),databases$description[order(databases$db)],sep=":\t"),collapse="\n "),"\n")
 	else
 	{
-            # Connect to database if file exists
-			if(is.null(dir))dir=databases$dir[databases$db==db]
-			if(dir=="")dir=sdir
-			fdir=file.path(dir,databases$filename[databases$db==db])
-			if(file.exists(fdir))
-			{
-			  extensions=strsplit(fdir,"\\.")[[1]]
-				if(extensions[length(extensions)]!="mdb")
-            connection<-odbcConnectAccess2007(fdir)
-        else
-				    connection=odbcConnectAccess(fdir)
-				if(connection==-1)
-				{
-					cat("\nError in connecting to database\n")
-					if(unlist(strsplit(R.Version()$system,","))[1]=="x86_64")
-						stop("Try 32 bit R")
-					stop	
-				}
-			}
-			else
-				stop("Bad file location. Check dir value")
-            # Get list of tables in the database
+	    connection=DBconnect(databases,db,dir)
+      # Get list of tables in the database
 			tables=sqlTables(connection,tableType="TABLE")$TABLE_NAME
-            # If null tbl value, print list of table names
+      # If null tbl value, print list of table names
 			if(is.null(tbl))
 			{
 				cat("Tables in: ",db,"\n",paste(paste(tables,collapse="\n "),"\n"))
 				odbcClose(connection)
 			}
 			else
-                # If tbl is provided make sure that all values are valid
+        # If tbl is provided make sure that all values are valid
 				if(any(!tolower(tbl)%in%tolower(tables)))
 				{
 					stop("Following tbl values not in tables:",paste(tbl[!tbl%in%tables],collapse=","))
@@ -93,11 +73,10 @@ getCalcurData=function(db=NULL,tbl=NULL,dir=NULL)
 				}
 				else
 				{
-                # Fetch each table in database and return as list if more than one
+          # Fetch each table in database and return as list if more than one
 					if(length(tbl)==1)
 					{
 						datalist=sqlFetch(connection,tables[tolower(tbl)==tolower(tables)])
-						
 					}
 					else
 					{

@@ -40,4 +40,3 @@ Any location can be used as long as the database file is at that location.
 \author{
 Jeff Laake
 }
-

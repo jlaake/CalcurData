@@ -39,26 +39,9 @@ saveCalcurData=function(x,db,tbl,dir=NULL)
 				paste(paste(format(databases$db[order(databases$db)],width=15),databases$description[order(databases$db)],sep=":\t"),collapse="\n "),"\n")
 	else
 	{
-		# Connect to database if file exists
-		if(is.null(dir))
-			dir=databases$dir[databases$db==db]
-		else
-		    if(dir=="")dir=sdir
-		fdir=file.path(dir,databases$filename[databases$db==db])
-		if(file.exists(fdir))
-		{
-			connection=odbcConnectAccess2007(fdir)
-			if(connection==-1)
-			{
-				cat("\nError in connecting to database\n")
-				if(unlist(strsplit(R.Version()$system,","))[1]=="x86_64")
-					stop("Try 32 bit R")
-				stop	
-			}
-		}
-		else
-			stop("Bad file location. Check dir value")
-		# If tbl is provided make sure that all values are valid
+		# Connect to database
+	  connection=DBconnect(databases,db,dir)
+	  # If tbl is provided make sure that all values are valid
 		if(length(tbl)>1)
 		{
 		   stop("\nOnly one value of tbl can be specified\n")		

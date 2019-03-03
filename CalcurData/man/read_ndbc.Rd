@@ -28,4 +28,3 @@ esb_jan=read_ndbc_month("46053","Jan",2014)
 \author{
 Jeff Laake
 }
-

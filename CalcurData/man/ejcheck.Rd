@@ -18,4 +18,3 @@ Validates Ej resight data
 \author{
 Jeff Laake, Jeff Harris
 }
-

@@ -22,4 +22,3 @@ Convert resight file from ACDSee format to data entry template format
 \author{
 Jeff Laake, Jeff Harris
 }
-
